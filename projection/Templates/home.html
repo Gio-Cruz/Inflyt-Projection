@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Python Django Hello World</title>
+</head>
+<body>
+{{Message}}
+<nav id = "menuTable" class = "nav">
+	<div class = 'tab-content'>
+		<div id = 'menu' class= 'tab-pane fade in active'>
+			<ul class = 'menu'>
+				<li><a href = '/astroProjection'>Astro Projection</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+	<div id="content" class="content">
+		<div class="container-fluid no-gutters">
+			<!-- This is where block content was -->
+			{% block content %} {% endblock content %}
+		</div>
+	</div>
+
+</body>
+</html>
