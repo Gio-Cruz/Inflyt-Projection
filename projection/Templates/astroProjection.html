@@ -1,7 +1,8 @@
 {% extends "home.html" %}
 {% block content %}
 <h1>Astrological Projection Page</h1>
-
+<IFRAME SRC="http://server1.sky-map.org/skywindow?object=M100&zoom=8&img_source=SDSS" WIDTH=10000 HEIGHT=5000>
+</IFRAME>
 <div id="container">
       <div id="map"></div>
       <div id="sidebar"></div>
@@ -24,6 +25,4 @@ function initMap() {
 		  });
 }
 </script>
-<IFRAME SRC="http://server1.sky-map.org/skywindow?object=M100&zoom=8&img_source=SDSS" WIDTH=10000 HEIGHT=5000>
-</IFRAME>
 {% endblock content %}
