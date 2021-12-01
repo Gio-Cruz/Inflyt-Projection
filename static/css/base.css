@@ -127,6 +127,7 @@ body, html {
     right: 5px;
     z-index: 999;
 }
+<<<<<<< HEAD
 .toolbar {
     position: fixed;
     width: 100%;
@@ -137,6 +138,8 @@ body, html {
     margin: 0 auto;
 }
 
+=======
+>>>>>>> Merge branch 'development-vanessa' of https://github.com/Gio-Cruz/Inflyt-Projection into development-vanessa
 .arrow {
     color: #fff;
     font-size: 2em;
