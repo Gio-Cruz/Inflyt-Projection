@@ -79,14 +79,98 @@ body, html {
     border: 0;
 }
 
+/* sidebar classes/IDs to close sidebar and rotate arrow TJ 5-26-21*/
+#hamburger-wrapper {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    margin: 0;
+    margin-left: 250px;
+    padding: 0;
+    z-index: 999;
+}
+.burger {
+    color: #fff;
+    font-size: 2em;
+    text-shadow: -2px 0 #000, 0 2px #000, 2px 0 #000, 0 -2px #000;
+    display: inline-block;
+    padding: 8px 8px 5px 8px;
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+}
+.burger:after {
+    margin-top: 12px;
+}
+.closed .burger {
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    margin-left: auto;
+    margin-right: 17px;
+    color: #fff;
+    text-shadow: -2px 0 #000, 0 2px #000, 2px 0 #000, 0 -2px #000;
+}
+.closed .burger:after {
+    transition: margin .2s, transform .1s .1s;
+}
+.closed #hamburger-wrapper {
+    margin-left: 0;
+}
+.closed #sidebar {
+    display: none;
+}
+/* Toolbar classes/IDs to close toolbar and rotate arrow TJ 5-26-21*/
+#arrow-wrapper {
+    float: right;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    right: 5px;
+    z-index: 999;
+}
+.arrow {
+    color: #fff;
+    font-size: 2em;
+    text-shadow: -2px 0 #000, 0 2px #000, 2px 0 #000, 0 -2px #000;
+    display: inline-block;
+    padding: 8px 8px 5px 8px;
+}
+.arrow:after {
+    margin-top: 12px;
+}
+.closed .arrow {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    margin-right: auto;
+    margin-left: 17px;
+    color: #fff;
+    text-shadow: -2px 0 #000, 0 2px #000, 2px 0 #000, 0 -2px #000;
+}
+.closed .arrow:after {
+    transition: margin .2s, transform .1s .1s;
+}
+.closed #arrow-wrapper {
+    margin-right: 17px;
+}
+.closed .toolbar {
+    display: none;
+}
+
 #map {
   flex-basis: 0;
   flex-grow: 4;
-  height: 100vw;
+  height: 50vh;
+  width: 100vw;
+}
+#skymap {
+  flex-basis: 0;
+  flex-grow: 4;
+  height: 50vh;
+  width: 100vw;
 }
 
+
 #container {
-  height: 100vw;
+  height: 100vh;
   display: flex;
 }
 
@@ -139,4 +223,20 @@ body, html {
 }
 .graph-container {
     overflow: auto;
+}
+#sidebar {
+    position: relative;
+    z-index: 3;
+    box-shadow: 1rem 1rem 1rem rgba(0, 0, 0, .1);
+    max-width: 300px;
+    width: 100vw;
+    color: #fff;
+    height: 100%}
+    
+ .row {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
 }
