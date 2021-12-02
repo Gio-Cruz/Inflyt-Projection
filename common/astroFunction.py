@@ -1,6 +1,6 @@
 import math
 from datetime import datetime as dt
-from cffi.backend_ctypes import long
+#from cffi.backend_ctypes import long
 
 R = 6371.0
 

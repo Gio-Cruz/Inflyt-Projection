@@ -9,15 +9,26 @@
 		<div class="filters">
 				<span style="margin-right:10px;margin-top:10px;text-align:left;display:inline">Start</span>
 				<select id="startCity" name="startCity" onchange = "">
-						<option value="">Los Angeles</option>
-						<option value="">Portland</option>
+						<option value="34.086610790779815,-118.2698917652363">Los Angeles</option>
+						<option value="45.55098947193025,-122.66115297824227">Portland</option>
 				</select>
 				<span style="margin-right:10px;margin-top:10px;text-align:left;display:inline">End</span>
-				<select style="margin-right:10px;" id="endCity" name="endCity" onchange = "">
-						<option value="">Los Angeles</option>
-						<option value="">Portland</option>						
+				<select id="endCity" name="endCity" onchange = "">
+						<option value="34.086610790779815,-118.2698917652363">Los Angeles</option>
+						<option value="45.55098947193025,-122.66115297824227">Portland</option>						
 				</select>
-				<input type="button" id="simStart" name="simStart" value = "Start Simulation" style=" margin : 0.5em auto;"/>
+				<span style="margin-right:10px;margin-top:10px;text-align:left;display:inline">Distance Apart</span>
+				<select style="margin-right:10px;" id="dist" name="dist" onchange = "">
+						<option value="50">10</option>
+						<option value="50">25</option>
+						<option value="50">50</option>
+						<option value="100">100</option>		
+						<option value="150">150</option>
+						<option value="200">200</option>	
+						<option value="250">250</option>
+						<option value="300">300</option>					
+				</select>
+				<input type="button" id="simStart" name="simStart" value = "Start Simulation" style=" margin : 0.5em auto;" onclick = "startSim();"/>
 		</div>
 	</div>
 </div>		
@@ -34,6 +45,8 @@ const arrowWrap = document.getElementById('arrow-wrapper')
 	arrowNavWrapper.classList.toggle("closed");
 	arrowWrap.classList.toggle("closed");
 })
+var points = [];
+var i;
 function initMap() {
 	var mapLat; var mapLon; var mapZoom;
 	mapLat = 34.217643; mapLon = -118.488386; mapZoom = 13;
@@ -48,5 +61,40 @@ function initMap() {
 		    map: theMap
 		  });
 }
+function moveGoogleMap(lat1, lon1) {
+	theMap = new google.maps.Map(document.getElementById('map'), {
+	    zoom: 11,
+	    center: {lat: lat1, lng: lon1},
+		mapTypeId: 'satellite'
+	  });
+}
+function startSim() {
+	var startPoint = document.getElementById("startCity").value;
+	var endPoint = document.getElementById("endCity").value;
+	var distApart = document.getElementById("dist").value;
+	$.getJSON( "/getTripPoints/" + startPoint + "/" + endPoint + "/" + distApart , function( data ) {
+		points = JSON.parse(data);
+		i = 0;
+		//for (var i = 0; i < points.length; i++ ){
+			//point = points[i]
+			//moveGoogleMap(point[0], point[1]);
+		//}
+		sim();
+	});
+	
+	
+}
+function sim(){
+	var my = setInterval(play, 2500);
+}
+function play(){
+	if(i <= points.length){
+		point = points[i];
+		moveGoogleMap(point[0], point[1]);
+		i++;
+	}
+}
+
+
 </script>
 {% endblock content %}
