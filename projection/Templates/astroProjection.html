@@ -1,11 +1,39 @@
 {% extends "home.html" %}
 {% block content %}
-<h1>Astrological Projection Page</h1>
+<div id="arrowNav-wrapper" class="">
+	<div id="arrow-wrapper" class="">
+		<p class="glyphicon glyphicon-chevron-up arrow"></p>
+	</div>
+	<div class="toolbar">
+		<h1>Astrological Projection Page</h1>
+		<div class="filters">
+				<span style="margin-right:10px;margin-top:10px;text-align:left;display:inline">Start</span>
+				<select id="startCity" name="startCity" onchange = "">
+						<option value="">Los Angeles</option>
+						<option value="">Portland</option>
+				</select>
+				<span style="margin-right:10px;margin-top:10px;text-align:left;display:inline">End</span>
+				<select style="margin-right:10px;" id="endCity" name="endCity" onchange = "">
+						<option value="">Los Angeles</option>
+						<option value="">Portland</option>						
+				</select>
+				<input type="button" id="simStart" name="simStart" value = "Start Simulation" style=" margin : 0.5em auto;"/>
+		</div>
+	</div>
+</div>		
+		
+		
 <IFRAME id = "skymap" SRC="http://server1.sky-map.org/skywindow?object=M100&zoom=8&img_source=SDSS">
 </IFRAME>
 <div id="map"></div>
 
 <script>
+const arrowNavWrapper = document.getElementById('arrowNav-wrapper')
+const arrowWrap = document.getElementById('arrow-wrapper')
+	arrowWrap.addEventListener("click", () => {
+	arrowNavWrapper.classList.toggle("closed");
+	arrowWrap.classList.toggle("closed");
+})
 function initMap() {
 	var mapLat; var mapLon; var mapZoom;
 	mapLat = 34.217643; mapLon = -118.488386; mapZoom = 13;
