@@ -38,6 +38,7 @@ def DMSToDecimal(hr, m, s):
     return hr + (m/60.0) + (s/60)
 
 def DecimalToDMS(deg):
+    deg = float(deg)
     degrees = int(deg)
     m = (deg-degrees)*60
     s = (m-int(m))*60
@@ -66,6 +67,7 @@ def ToHrMinSec(deg):
     
 # convert geocentric latitude/longitude to right ascension and declination
 def GeoToCelestial(lat,long):
+    long = float(long)
     dec = DecimalToDMS(lat)
     JD = JulianDay()
     T = (JD - 2451545)/36525
@@ -76,10 +78,10 @@ def GeoToCelestial(lat,long):
     LST = theta0 + long
     # convert deg to hr-min-sec
     ra = ToHrMinSec(LST)
-    print("Right Acension = {}hr {}min {}s, Declination = {}° {}' {}\"".format(ra[0],ra[1],ra[2], dec[0],dec[1],dec[2]))
+    #print("Right Acension = {}hr {}min {}s, Declination = {}° {}' {}\"".format(ra[0],ra[1],ra[2], dec[0],dec[1],dec[2]))
+    return ra, dec
     
-    
-GeoToCelestial(36.7783, 119.4179)
+#GeoToCelestial(36.7783, -119.4179)
     
     
     

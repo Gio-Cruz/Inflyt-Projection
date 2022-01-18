@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from common import astroFunction
-from common.astroFunction import routePoints
+from common.astroFunction import routePoints, GeoToCelestial
 
 
 def home_page(request):
@@ -36,3 +36,14 @@ def getTripPoints(request, startPoint, endPoint, distApart):
     context = {}
     jsResult = json.dumps(routePoints(lat1, lon1, lat2, lon2, distApart))
     return JSONResponse(jsResult)
+
+def getCelestial(request, lat, long):
+        ra, dec = GeoToCelestial(lat, long)
+        raString = str(ra[0])+ " " + str(ra[1]) + " " + str(round(ra[2],2))
+        decString = str(dec[0])+ " " + str(dec[1]) + " " + str(round(dec[2],2))
+        resultDict = {"ra" : raString, "dec" : decString}
+        print(resultDict)
+        context = {}
+        jsResult = json.dumps(resultDict)
+        return JSONResponse(jsResult)
+        

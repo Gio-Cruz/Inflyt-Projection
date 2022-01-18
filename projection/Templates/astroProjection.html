@@ -19,8 +19,8 @@
 				</select>
 				<span style="margin-right:10px;margin-top:10px;text-align:left;display:inline">Distance Apart</span>
 				<select style="margin-right:10px;" id="dist" name="dist" onchange = "">
-						<option value="50">10</option>
-						<option value="50">25</option>
+						<option value="10">10</option>
+						<option value="25">25</option>
 						<option value="50">50</option>
 						<option value="100">100</option>		
 						<option value="150">150</option>
@@ -32,12 +32,7 @@
 		</div>
 	</div>
 </div>		
-		
-		
-<IFRAME id = "skymap" SRC="http://server1.sky-map.org/skywindow?object=M100&zoom=8&img_source=SDSS">
-</IFRAME>
-<div id="map"></div>
-
+<IFRAME id = "skymap" SRC="http://server1.sky-map.org/skywindow?object=M100&zoom=8&img_source=SDSS"></IFRAME><div id="map"></div>
 <script>
 const arrowNavWrapper = document.getElementById('arrowNav-wrapper')
 const arrowWrap = document.getElementById('arrow-wrapper')
@@ -47,13 +42,16 @@ const arrowWrap = document.getElementById('arrow-wrapper')
 })
 var points = [];
 var i;
+var simInterval;
 function initMap() {
 	var mapLat; var mapLon; var mapZoom;
 	mapLat = 34.217643; mapLon = -118.488386; mapZoom = 13;
 	
 	theMap = new google.maps.Map(document.getElementById('map'), {
 	    zoom: 4,
-	    center: {lat: 49.496675, lng: -102.65625}
+	    center: {lat: 49.496675, lng: -102.65625},
+	    mapTypeId: 'satellite'
+	
 	  });
 
 	 var ctaLayer = new google.maps.KmlLayer({
@@ -62,11 +60,7 @@ function initMap() {
 		  });
 }
 function moveGoogleMap(lat1, lon1) {
-	theMap = new google.maps.Map(document.getElementById('map'), {
-	    zoom: 11,
-	    center: {lat: lat1, lng: lon1},
-		mapTypeId: 'satellite'
-	  });
+	theMap.setCenter(new google.maps.LatLng(lat1, lon1));
 }
 function startSim() {
 	var startPoint = document.getElementById("startCity").value;
@@ -79,17 +73,25 @@ function startSim() {
 			//point = points[i]
 			//moveGoogleMap(point[0], point[1]);
 		//}
-		sim();
 	});
-	
+	clearInterval(simInterval);
+	sim();	
 	
 }
 function sim(){
-	var my = setInterval(play, 2500);
+	simInterval = setInterval(play, 2500);
 }
 function play(){
 	if(i <= points.length){
 		point = points[i];
+		$.getJSON( "/getCelestial/" + point[0] + "/" + point[1] , function (data) {
+			var result = JSON.parse(data);
+			//var skyMapCall = "http://www.sky-map.org/?ra=" + result.ra + "&de=" + result.dec + "&zoom=3&show_grid=0&show_constellation_boundaries=1";
+			var skyMapCall = "http://server1.sky-map.org/skywindow?ra=" + result.ra + "&de=" + result.dec + "&zoom=3";
+			document.getElementById("skymap").src = skyMapCall;
+			console.log(skyMapCall);
+		});
+		
 		moveGoogleMap(point[0], point[1]);
 		i++;
 	}
