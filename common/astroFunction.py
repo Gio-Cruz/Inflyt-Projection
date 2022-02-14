@@ -82,6 +82,8 @@ def GeoToCelestial(lat,long):
     return ra, dec
     
 #GeoToCelestial(36.7783, -119.4179)
+
+
     
     
     

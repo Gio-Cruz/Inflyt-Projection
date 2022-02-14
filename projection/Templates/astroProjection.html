@@ -32,7 +32,14 @@
 		</div>
 	</div>
 </div>		
-<IFRAME id = "skymap" SRC="http://server1.sky-map.org/skywindow?object=M100&zoom=8&img_source=SDSS"></IFRAME><div id="map"></div>
+ 
+
+<div id="skymapcontainer" style= "display: inline-grid;">
+<IFRAME class = "skymapinfo" SRC="http://server1.sky-map.org/?img_source=IMG_905508:all&ra=12.381917&de=15.82194&zoom=14&show_box=0" style= "height: 100vh; width: 30vw; grid-column: 4 / 5 ;grid-row: 1 / 2;z-index:2;"></IFRAME>
+<IFRAME id = "skymap" SRC="http://server1.sky-map.org/skywindow?object=M100&img_source=DSS2&zoom=8" style= "height: 100vh; grid-column: 1 / 4; grid-row: 1 / 2;"></IFRAME>
+</div>
+<div id="map" style: "position: absolute; ></div>
+
 
 <script>
 const arrowNavWrapper = document.getElementById('arrowNav-wrapper')
@@ -45,7 +52,7 @@ const arrowWrap = document.getElementById('arrow-wrapper')
 const cameraOptions = {
 	tilt: 0,
   	heading: 320,
-  	zoom: 14,
+  	zoom: 8,
   	center: { lat: 49.496675, lng: -102.65625 },
 };
 
@@ -106,9 +113,14 @@ function initMap() {
 /*	var ctaLayer = new google.maps.KmlLayer({
 		url: 'https://googlearchive.github.io/js-v2-samples/ggeoxml/cta.kml',
 		map: theMap
+		
+
 	}); */
 	
 	buttonControl(theMap);
+	
+	var Infomap = document.getElementById("skymapcontainer").getElementsByClassName("skymapinfo")[0];
+	Infomap.onload = function () {Infomap.contentWindow.scrollTo(Infomap.scrollWidth, 0);}
 }
 
 function moveGoogleMap(lat1, lon1) {
@@ -139,7 +151,7 @@ function play(){
 		$.getJSON( "/getCelestial/" + point[0] + "/" + point[1] , function (data) {
 			var result = JSON.parse(data);
 			//var skyMapCall = "http://www.sky-map.org/?ra=" + result.ra + "&de=" + result.dec + "&zoom=3&show_grid=0&show_constellation_boundaries=1";
-			var skyMapCall = "http://server1.sky-map.org/skywindow?ra=" + result.ra + "&de=" + result.dec + "&zoom=3";
+			var skyMapCall = "http://server1.sky-map.org/skywindow?ra=" + result.ra + "&de=" + result.dec + "&img_source=DSS2&zoom=3";
 			document.getElementById("skymap").src = skyMapCall;
 			console.log(skyMapCall);
 		});

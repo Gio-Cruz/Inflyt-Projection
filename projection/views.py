@@ -46,4 +46,4 @@ def getCelestial(request, lat, long):
         context = {}
         jsResult = json.dumps(resultDict)
         return JSONResponse(jsResult)
-        
+

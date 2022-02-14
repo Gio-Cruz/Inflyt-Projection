@@ -4,7 +4,6 @@ body, html {
     padding: 0;
 }
 
-
 .ui-button {
   background-color: #fff;
   border: 0;
@@ -20,6 +19,10 @@ body, html {
 .ui-button:hover {
   background: #ebebeb;
 }
+
+.skymapcontainer {
+   display: inline-grid;
+ }
 
 .menu {
     margin: 0;
@@ -145,7 +148,6 @@ body, html {
     right: 5px;
     z-index: 999;
 }
-<<<<<<< HEAD
 .toolbar {
     position: fixed;
     width: 100%;
@@ -156,8 +158,6 @@ body, html {
     margin: 0 auto;
 }
 
-=======
->>>>>>> Merge branch 'development-vanessa' of https://github.com/Gio-Cruz/Inflyt-Projection into development-vanessa
 .arrow {
     color: #fff;
     font-size: 2em;
@@ -186,18 +186,31 @@ body, html {
     display: none;
 }
 
+
+#skymap {
+  position: relative;
+  flex-basis: 0;
+  flex-grow: 4;
+  height: 50vh;
+  width: 100vw;
+  animation-delay: 2000ms;
+  z-index: 1;
+}
+
+#skymapinfo {
+	position: relative;
+	
+	height: 50vh;
+	width: 50vw;
+	z-index: 2;
+
 #map {
   flex-basis: 0;
   flex-grow: 4;
   height: 50vh;
   width: 100vw;
 }
-#skymap {
-  flex-basis: 0;
-  flex-grow: 4;
-  height: 50vh;
-  width: 100vw;
-}
+
 
 
 #container {
