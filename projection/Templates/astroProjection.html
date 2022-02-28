@@ -11,11 +11,16 @@
 				<select id="startCity" name="startCity" onchange = "">
 						<option value="34.086610790779815,-118.2698917652363">Los Angeles</option>
 						<option value="45.55098947193025,-122.66115297824227">Portland</option>
+						<option value="40.76455896916648, -73.97823379174758">New York</option>
+						<option value="41.88179223353532, -87.63049326847904">Chicago</option>
 				</select>
 				<span style="margin-right:10px;margin-top:10px;text-align:left;display:inline">End</span>
 				<select id="endCity" name="endCity" onchange = "">
 						<option value="34.086610790779815,-118.2698917652363">Los Angeles</option>
-						<option value="45.55098947193025,-122.66115297824227">Portland</option>						
+						<option value="45.55098947193025,-122.66115297824227">Portland</option>
+						<option value="40.76455896916648, -73.97823379174758">New York</option>
+						<option value="41.88179223353532, -87.63049326847904">Chicago</option>
+											
 				</select>
 				<span style="margin-right:10px;margin-top:10px;text-align:left;display:inline">Distance Apart</span>
 				<select style="margin-right:10px;" id="dist" name="dist" onchange = "">
@@ -34,16 +39,29 @@
 </div>		
  
 
-<div id="skymapcontainer" style= "display: inline-grid;">
-<IFRAME class = "skymapinfo" SRC="http://server1.sky-map.org/?img_source=IMG_905508:all&ra=12.381917&de=15.82194&zoom=14&show_box=0" style= "height: 100vh; width: 30vw; grid-column: 4 / 5 ;grid-row: 1 / 2;z-index:2;"></IFRAME>
-<IFRAME id = "skymap" SRC="http://server1.sky-map.org/skywindow?object=M100&img_source=DSS2&zoom=8" style= "height: 100vh; grid-column: 1 / 4; grid-row: 1 / 2;"></IFRAME>
-</div>
-<div id="map" style: "position: absolute; ></div>
+<div id = "sky"><IFRAME id = "skymap" SRC="http://server1.sky-map.org/skywindow?object=M100&zoom=4&img_source=DSS2" onload = "getStuff()"></IFRAME></div><div id="map"></div>
 
 
 <script>
+var iframe = null;
+
+$(document).ready(function(){
+	$(window).on('mousemove', function (event) {
+	  
+	    var elmnt = iframe.contentWindow.document.getElementById("dhtmltooltip");
+	    console.log(elmnt);
+	});
+});
+
+function getStuff() {
+	iframe = document.getElementById("skymap");
+}
+
+
 const arrowNavWrapper = document.getElementById('arrowNav-wrapper')
 const arrowWrap = document.getElementById('arrow-wrapper')
+const wrapper = document.getElementById('hamburger-wrapper');
+const navWrap = document.getElementById('nav-wrapper');
 	arrowWrap.addEventListener("click", () => {
 	arrowNavWrapper.classList.toggle("closed");
 	arrowWrap.classList.toggle("closed");
@@ -52,7 +70,7 @@ const arrowWrap = document.getElementById('arrow-wrapper')
 const cameraOptions = {
 	tilt: 0,
   	heading: 320,
-  	zoom: 8,
+  	zoom: 14,
   	center: { lat: 49.496675, lng: -102.65625 },
 };
 
@@ -118,9 +136,6 @@ function initMap() {
 	}); */
 	
 	buttonControl(theMap);
-	
-	var Infomap = document.getElementById("skymapcontainer").getElementsByClassName("skymapinfo")[0];
-	Infomap.onload = function () {Infomap.contentWindow.scrollTo(Infomap.scrollWidth, 0);}
 }
 
 function moveGoogleMap(lat1, lon1) {
@@ -139,6 +154,10 @@ function startSim() {
 		//}
 	});
 	clearInterval(simInterval);
+	arrowNavWrapper.classList.toggle("closed");
+	arrowWrap.classList.toggle("closed");
+	wrapper.classList.toggle("closed");
+	navWrap.classList.toggle("closed");
 	sim();	
 	
 }

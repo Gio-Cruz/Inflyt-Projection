@@ -5,7 +5,9 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="{% static 'css/base.min.css' %}">
 	<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="//code.jquery.com/jquery-latest.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'>
 	<script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script>
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" rel="stylesheet">
@@ -47,13 +49,5 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-const wrapper = document.getElementById('hamburger-wrapper');
-const navWrap = document.getElementById('nav-wrapper');
-wrapper.addEventListener("click", () => {
-	wrapper.classList.toggle("closed");
-	navWrap.classList.toggle("closed");
-});
-</script>
 </body>
 </html>

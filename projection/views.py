@@ -7,6 +7,11 @@ from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from common import astroFunction
 from common.astroFunction import routePoints, GeoToCelestial
+from astroquery.simbad import Simbad
+from astroquery.simbad.core import SimbadVOTableResult
+from astropy.io.votable import parse
+import astropy.coordinates as coord
+import astropy.units as u
 
 
 def home_page(request):
@@ -41,9 +46,17 @@ def getCelestial(request, lat, long):
         ra, dec = GeoToCelestial(lat, long)
         raString = str(ra[0])+ " " + str(ra[1]) + " " + str(round(ra[2],2))
         decString = str(dec[0])+ " " + str(dec[1]) + " " + str(round(dec[2],2))
+        print (raString + " +" + decString)
+        c = coord.SkyCoord(raString + " +" + decString , unit=(u.hourangle, u.deg) )
+        print(c)
+        result = Simbad.query_region_async(coord.SkyCoord(raString + " +" + decString , unit=(u.hourangle, u.deg), frame='icrs' ), radius='0d10m0s')
+        tableResult = SimbadVOTableResult(result.text, verbose=True).table['MAIN_ID']
+        for row in tableResult :
+            print (row)
+        
         resultDict = {"ra" : raString, "dec" : decString}
         print(resultDict)
         context = {}
         jsResult = json.dumps(resultDict)
         return JSONResponse(jsResult)
-
+        
