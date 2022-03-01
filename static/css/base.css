@@ -186,6 +186,9 @@ body, html {
     display: none;
 }
 
+.box {
+   border: 1px black;
+}
 
 #skymap {
   position: relative;

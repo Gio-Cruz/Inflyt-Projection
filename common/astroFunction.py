@@ -1,5 +1,6 @@
 import math
 from datetime import datetime as dt
+import time
 #from cffi.backend_ctypes import long
 
 R = 6371.0
@@ -22,16 +23,55 @@ def routePoints(startLat, startLon, endLat, endLon, distApart):
     
     waypoints = []
     
-    print(d)
+    #print(d)
     
     for distance in range(0, d, distApart):
         waypoints.append(waypoint(theta1, lamb1, delta, distance))
     
-    print(waypoints)
+    #print(waypoints)
     return waypoints
 
 #routePoints(45,60, 45, 30, 100)
-print(dt.utcnow().time())
+
+
+########################################################################################################################################
+def absFloor(val):
+    if (val >= 0.0):
+        return math.floor(val)
+    else: 
+        return math.ceil(val)
+    
+def modDay(val):
+    b = val/24.0
+    a = 24.0*(b-absFloor(b))
+    if (a < 0): 
+        a = a + 24.0
+    #print("modDay: {}".format(a))
+    return a
+
+def mod2pi(angle):
+    b = angle/360.0
+    a = 360.0*(b-absFloor(b))
+    if (a < 0):
+        a = a + 360.0
+    #print("mod2pi: {}".format(a))
+    return a
+
+def getDaysinMonth(mm, yy):
+    mm = int(mm)
+    yy = int(yy)
+    ndays = 31
+    if ((mm == 4) or (mm==6) or (mm==9) or (mm==11)):
+        ndays = 30;
+    if (mm == 2):
+        ndays = 28
+        if ((yy % 4) == 0):
+            ndays = 29
+        if ((yy % 100) == 0):
+            ndays = 28
+        if ((yy % 400) == 0):
+            ndays = 29;
+    return ndays
 
 # convert degrees minutes seconds to decimal degrees
 def DMSToDecimal(hr, m, s):
@@ -46,54 +86,75 @@ def DecimalToDMS(deg):
     return [degrees, m, s]
 
 # return Julian Date for current UTC
-def JulianDay():
-    Y = dt.today().year
-    M = dt.today().month
-    D = dt.today().day
+def JulianDay(yy,mm,dd,hh):
+    yy = float(yy)
+    mm = float(mm)
+    dd = float(dd)
+    hh = float(hh) 
+    extra = (100.0*yy + mm) - 190002.5;
+    jday  = 367.0*yy;
+    jday -= math.floor(7.0*(yy+math.floor((mm+9.0)/12.0))/4.0);
+    jday += math.floor(275.0*mm/9.0);
+    jday += dd;
+    jday += hh/24.0;
+    jday += 1721013.5;
+    jday -= 0.5*extra/abs(extra);
+    jday += 0.5;
+    return jday
     
-    if M <= 2:
-        M, Y = M+2, Y-1
-    A = int(Y/100)
-    B = 2 - A + int(A/4)
-    JD = int(365.25*(Y+4716)) + int(30.6001*(M+1)) + D - B - 1524.5
-    return JD
+def getDayno2K(yy,mm,dd,hh):
+    jd = JulianDay(yy,mm,dd,hh)
+    return jd - 2451543.5
+
+def calcLST(olong):
+    lsign = 1.0
+    hr = round(dt.today().hour + dt.today().minute/60.0, 2)
+    month = dt.today().month
+    day = dt.today().day
+    year = dt.today().year
+    tzone = -1.0*time.timezone/3600
+    if olong > 180:
+        olong = olong - 180
+        olong = abs(olong)
+    hemi = "W" if tzone < 0.0 else "E"
+    if hemi == "W":
+        lsign = -1.0
     
+    ut = modDay(hr - tzone)
+    dno = getDayno2K(year, month, day, hr)
+    ws = mod2pi(282.9404 + 4.70935*math.pow(10.0,-5)*dno)
+    ms = mod2pi(356.0470 + 0.9856002585*dno)
+    #print(dno)
+    meanlong = mod2pi(ms + ws)
+    gmst0 = (meanlong)/15.0
+    lst = modDay(gmst0 + ut + lsign*olong/15.0) + 11.0 + 56.0/60.0
+    #print("gmst0: "+str(gmst0) + "ut: "+str(ut)+"lsign: "+str(lsign)+"olong: "+str(olong))
+    if (lst >= 24.0): 
+        lst = lst - 24.0
+    return lst
 # convert decimal degrees to hr min sec
-def ToHrMinSec(deg):
-    Hr = int(deg/15) # 15 arc degrees = 1 hour
-    Min = int(((deg/15) - Hr)*60) 
-    Sec = ((((deg/15) - Hr)*60) - Min)*60
+def ToHrMinSec(hrs):
+    Hr = int(hrs) # 15 arc degrees = 1 hour
+    Min = int((hrs-Hr)*60) 
+    Sec = (((hrs - Hr)*60) - Min)*60
     return [Hr, Min, Sec]
     
 # convert geocentric latitude/longitude to right ascension and declination
 def GeoToCelestial(lat,long):
     long = float(long)
     dec = DecimalToDMS(lat)
-    JD = JulianDay()
-    T = (JD - 2451545)/36525
-    # calculate mean sidereal time at greenwich
-    theta0 = 280.46061837 + 360.98564736629*(JD - 2451545.0) + 0.000387933*T*T - (T*T*T)/ 38710000
-    while theta0 >= 360:
-        theta0 -= 360
-    LST = theta0 + long
+    LST = calcLST(long)
+    print(LST)
     # convert deg to hr-min-sec
     ra = ToHrMinSec(LST)
-    #print("Right Acension = {}hr {}min {}s, Declination = {}° {}' {}\"".format(ra[0],ra[1],ra[2], dec[0],dec[1],dec[2]))
+    print("Right Acension = {}hr {}min {}s, Declination = {}° {}' {}\"".format(ra[0],ra[1],ra[2], dec[0],dec[1],dec[2]))
     return ra, dec
     
-#GeoToCelestial(36.7783, -119.4179)
+ra, dec = GeoToCelestial(120, 120)
+
+#print(ra,dec)
 
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     

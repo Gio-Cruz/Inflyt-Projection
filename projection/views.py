@@ -1,6 +1,8 @@
 from django.shortcuts import render
 import math
 import json
+from django.contrib.staticfiles.views import serve
+from projection import services
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
@@ -43,7 +45,9 @@ def getTripPoints(request, startPoint, endPoint, distApart):
     return JSONResponse(jsResult)
 
 def getCelestial(request, lat, long):
+        print("in getCelestial lat/long: {} {}".format(lat,long))
         ra, dec = GeoToCelestial(lat, long)
+        print("In GetCelestial: {},{}".format(ra, dec))
         raString = str(ra[0])+ " " + str(ra[1]) + " " + str(round(ra[2],2))
         decString = str(dec[0])+ " " + str(dec[1]) + " " + str(round(dec[2],2))
         print (raString + " +" + decString)
@@ -60,3 +64,13 @@ def getCelestial(request, lat, long):
         jsResult = json.dumps(resultDict)
         return JSONResponse(jsResult)
         
+
+
+def getIDNames(request, ra, dec):
+    resultDict = services.get_object_ids(ra, dec)
+    #print(resultDict)
+    context = {}
+    jsResult = json.dumps(resultDict)
+    return JSONResponse(jsResult)
+
+
