@@ -6,7 +6,7 @@ def get_object_ids(ra,dec):
     # set radius in arcminn
     radius = "10";
     # add priorities for searching ID (for N element array, Nth element has highest priority) max 3 letters
-    const_ls = ["Cyg","HD"]
+    const_ls = ["Cyg","Lac","HD"]
     #ra_ls = ra.split(" ")
     #dec_ls = dec.split(" ")
     coord_str = ra + "+" + dec
