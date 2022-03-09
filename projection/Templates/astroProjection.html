@@ -209,7 +209,7 @@ function play(){
 		$.getJSON( "/getCelestial/" + point[0] + "/" + point[1] , function (data) {
 			result = JSON.parse(data);
 			//var skyMapCall = "http://www.sky-map.org/?ra=" + result.ra + "&de=" + result.dec + "&zoom=3&show_grid=0&show_constellation_boundaries=1";
-			var skyMapCall = "http://server1.sky-map.org/skywindow?ra=" + result.ra + "&de=" + result.dec + "&img_source=DSS2&zoom=3";
+			var skyMapCall = "http://server1.sky-map.org/skywindow?ra=" + result.ra + "&de=" + result.dec + "&img_source=DSS2&zoom=5";
 			document.getElementById("skymap").src = skyMapCall;
 			console.log(skyMapCall);
 			console.log(result);
