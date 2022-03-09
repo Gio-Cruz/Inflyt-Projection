@@ -162,7 +162,13 @@ function initMap() {
 
 
 let theMap;
+</script>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSBZ0W0eCGj5RpLi8t7rEXdmi6mHmhy8I&callback=initMap&v=beta"
+		      async 
+></script>
+
+<script>
 var points = [];
 var i;
 var simInterval;
@@ -200,7 +206,9 @@ function sim(){
 
 var ra;
 var dec;
-		
+var result;
+var star_result;	
+
 function play(){
     var element = document.getElementById("aladin-lite-div");
     
@@ -212,14 +220,14 @@ function play(){
 			var skyMapCall = "http://server1.sky-map.org/skywindow?ra=" + result.ra + "&de=" + result.dec + "&img_source=DSS2&zoom=5";
 			document.getElementById("skymap").src = skyMapCall;
 			console.log(skyMapCall);
-			console.log(result);
+			console.log("i = "+i+":"+result);
 			ra = result.ra;
 			dec = result.dec;
 						//aladin.gotoRaDec(result.ra_deg,result.dec_deg);
 						aladin.setFov(0.4);			
 		});
 		
-		console.log(ra, dec);
+		console.log("i, ra, dec: "+ i+ra+dec);
 		$.getJSON("/getIDNames/" + ra + "/" + dec , function (data) {
 				var star_result = JSON.parse(data);
 				//console.log(star_result);
@@ -228,16 +236,12 @@ function play(){
 				if ((k < 0) || ((i-k)>5)) {
 					k = i; // current index
 				console.log(star_result);
-				 	const indexOfGalaxy = star_result.Types.indexOf("G", 0);
-				 	console.log(indexOfGalaxy);
-				 	if (indexOfGalaxy >= 0) {
-						aladin.gotoObject(star_result.IDs[indexOfGalaxy]);
-					}
-					else { aladin.gotoObject(star_result.IDs[0]); }
+				 	// go to first star in list
+				 	aladin.gotoObject(star_result.IDs[0]);
 				}
 			});	
-		
-		moveGoogleMap(point[0], point[1]);
+		setTimeout(function() {moveGoogleMap(point[0], point[1]); console.log("i = "+i+":"+point);},400);
+		//moveGoogleMap(point[0], point[1]);
 		i++;
 	}
 }

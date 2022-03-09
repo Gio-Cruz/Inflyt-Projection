@@ -50,13 +50,13 @@ def getCelestial(request, lat, long):
         print("In GetCelestial: {},{}".format(ra, dec))
         raString = str(ra[0])+ " " + str(ra[1]) + " " + str(round(ra[2],2))
         decString = str(dec[0])+ " " + str(dec[1]) + " " + str(round(dec[2],2))
-        print (raString + " +" + decString)
-        c = coord.SkyCoord(raString + " +" + decString , unit=(u.hourangle, u.deg) )
-        print(c)
-        result = Simbad.query_region_async(coord.SkyCoord(raString + " +" + decString , unit=(u.hourangle, u.deg), frame='icrs' ), radius='0d10m0s')
-        tableResult = SimbadVOTableResult(result.text, verbose=True).table['MAIN_ID']
-        for row in tableResult :
-            print (row)
+        #print (raString + " +" + decString)
+        #c = coord.SkyCoord(raString + " +" + decString , unit=(u.hourangle, u.deg) )
+        #print(c)
+        #result = Simbad.query_region_async(coord.SkyCoord(raString + " +" + decString , unit=(u.hourangle, u.deg), frame='icrs' ), radius='0d10m0s')
+        #tableResult = SimbadVOTableResult(result.text, verbose=True).table['MAIN_ID']
+        #for row in tableResult :
+            #print (row)
         
         resultDict = {"ra" : raString, "dec" : decString}
         print(resultDict)
@@ -67,7 +67,12 @@ def getCelestial(request, lat, long):
 
 
 def getIDNames(request, ra, dec):
-    resultDict = services.get_object_ids(ra, dec)
+    ra = ra.split(" ")
+    dec = dec.split(" ")
+    ra_str = ra[0]+"h"+ra[1]+"m"+ra[2]+"s"
+    dec_str = dec[0]+"d"+dec[1]+"m"+dec[2]+"s"
+
+    resultDict = services.get_object_ids(ra_str, dec_str)
     #print(resultDict)
     context = {}
     jsResult = json.dumps(resultDict)
