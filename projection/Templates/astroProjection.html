@@ -41,7 +41,7 @@
 
 
 <div id="skymapcontainer" style= "display: inline-grid;">
-	<textarea readonly id="starinfo" rows="2" cols="60" style="position: relative; width:25vw; height:6vh;grid-column: 3/5;grid-row: 2/3;">Placeholder</textarea>
+	<textarea readonly id="starinfo" rows="2" cols="60" style="position: relative; width:25vw; height:6vh;grid-column: 3/5;grid-row: 2/3;">Object information will be displayed here</textarea>
 
 	<div id="aladin-lite-div" style="width: 35vw; height:25vh; grid-column: 3 / 5; grid-row: 1 / 2;"></div>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.1.min.js" charset="utf-8"></script>
@@ -173,7 +173,7 @@ let theMap;
 var points = [];
 var i;
 var simInterval;
-var k;
+var k = -1;
 
 
 
@@ -229,12 +229,13 @@ function play(){
 		});
 		
 		//console.log("i, ra, dec: "+ i+ra+dec);
+		// check if this is the start of simulation OR if map has moved 5 times
+		if ((k < 0) || ((i-k)>5)) {
 		$.getJSON("/getIDNames/" + ra + "/" + dec , function (data) {
 				var star_result = JSON.parse(data);
 				//console.log(star_result);
 				//console.log(i);
 				// reset infomap every 5 points
-				if ((k < 0) || ((i-k)>5)) {
 					k = i; // current index
 				console.log("OBJECT CURRENTLY DISPLAYED: " + star_result.IDs[0]);
 				console.log("OBJECT RA: " + star_result.Ra[0]);
@@ -243,8 +244,8 @@ function play(){
 				
 				 	// go to first star in list
 				 	aladin.gotoObject(star_result.IDs[0]);
-				}
 			});	
+		}
 		setTimeout(function() {moveGoogleMap(point[0], point[1]);},400);
 		//console.log("i = "+i+":"+point);
 		//moveGoogleMap(point[0], point[1]);
