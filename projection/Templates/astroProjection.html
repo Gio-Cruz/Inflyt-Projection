@@ -57,6 +57,9 @@
 	</div>
 
 </div>
+<div id="text-box">
+	<textarea readonly id="starinfo" rows="2" cols="50" style="position: absolute; top: 25vh; right: 18px;">Placeholder</textarea>
+</div>
 <div id="map" style: "height: 50vh; position: absolute; ></div>
 
  
@@ -238,6 +241,8 @@ function play(){
 				console.log("OBJECT CURRENTLY DISPLAYED: " + star_result.IDs[0]);
 				console.log("OBJECT RA: " + star_result.Ra[0]);
 				console.log("OBJECT DEC: "+ star_result.Dec[0]);
+				document.getElementById("starinfo").value="Object ID: "+star_result.IDs[0]+"\nObject RA: "+star_result.Ra[0]+" Object Dec: "+star_result.Dec[0];
+				
 				 	// go to first star in list
 				 	aladin.gotoObject(star_result.IDs[0]);
 				}

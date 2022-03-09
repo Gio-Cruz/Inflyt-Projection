@@ -28,12 +28,19 @@ def get_object_ids(ra,dec):
             ID = tr_elements[i][1].text_content().replace("\n","").rstrip()
             Type = tr_elements[i][3].text_content().replace("\n","").rstrip()
             obj_ra = tr_elements[i][4].text_content().replace("\n22","").rstrip()
+            obj_ra = obj_ra.replace("\n","") # remove new line
             obj_dec = tr_elements[i][5].text_content().replace("\n","").rstrip()
-
+            
+            # Format ra and dec strings for printing
+            obj_ra = obj_ra.split(" ")
+            obj_dec = obj_dec.split(" ")
+            ra_str = obj_ra[0]+"h"+obj_ra[1]+"m"+obj_ra[2][0:2]+"s"
+            dec_str = obj_dec[0]+"d"+obj_dec[1]+"m"+obj_dec[2][0:2]+"s"  
+                      
             object_IDs.append(ID)
             object_types.append(Type)
-            object_ra.append(obj_ra)
-            object_dec.append(obj_dec)
+            object_ra.append(ra_str)
+            object_dec.append(dec_str)
 
             # if no priority element has been swapped, check object ID for priority
             if swap_fl == 0:
