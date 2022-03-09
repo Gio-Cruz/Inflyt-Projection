@@ -24,6 +24,7 @@
 				</select>
 				<span style="margin-right:10px;margin-top:10px;text-align:left;display:inline">Distance Apart</span>
 				<select style="margin-right:10px;" id="dist" name="dist" onchange = "">
+						<option value="5">5</option>
 						<option value="10">10</option>
 						<option value="25">25</option>
 						<option value="50">50</option>
@@ -79,10 +80,16 @@ const arrowNavWrapper = document.getElementById('arrowNav-wrapper')
 const arrowWrap = document.getElementById('arrow-wrapper')
 const wrapper = document.getElementById('hamburger-wrapper');
 const navWrap = document.getElementById('nav-wrapper');
-	arrowWrap.addEventListener("click", () => {
+arrowWrap.addEventListener("click", () => {
 	arrowNavWrapper.classList.toggle("closed");
 	arrowWrap.classList.toggle("closed");
+	navWrap.classList.toggle("closed");
 })
+wrapper.addEventListener("click", () => {
+	navWrap.classList.toggle("closed");
+})
+
+
 
 const cameraOptions = {
 	tilt: 0,
@@ -188,7 +195,7 @@ function startSim() {
 	
 }
 function sim(){
-	simInterval = setInterval(play, 2500);
+	simInterval = setInterval(play, 3000);
 }
 
 var ra;
