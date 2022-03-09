@@ -1,44 +1,25 @@
-body, html {
+body,
+html {
     height: 100%;
     margin: 0;
     padding: 0;
 }
-
-.ui-button {
-  background-color: #fff;
-  border: 0;
-  border-radius: 2px;
-  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
-  margin: 10px;
-  padding: 0 0.5em;
-  font: 400 32px Roboto, Arial, sans-serif;
-  overflow: hidden;
-  height: 40px;
-  cursor: pointer;
-}
-.ui-button:hover {
-  background: #ebebeb;
-}
-
-.skymapcontainer {
-   display: inline-grid;
- }
-
 .menu {
     margin: 0;
     padding: 0;
     list-style: none;
 }
-.menu>li {
-    border-bottom: 1px solid rgba(0, 0, 0, .5);
+.menu > li {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
 }
-.menu>li:hover {
-    background-color: rgba(0, 0, 0, .5);
+.menu > li:hover {
+    background-color: rgba(0, 0, 0, 0.5);
 }
-.menu>li a {
+.menu > li a {
     padding: 2rem 2.5rem;
 }
-.menu>li a, .menu>li>strong {
+.menu > li a,
+.menu > li > strong {
     display: block;
     color: #183762;
     font-size: 1.25rem;
@@ -46,11 +27,12 @@ body, html {
     text-transform: uppercase;
     letter-spacing: 1px;
 }
-.menu>li a:focus, .menu>li a:hover {
+.menu > li a:focus,
+.menu > li a:hover {
     text-decoration: none;
 }
-.menu>li>strong {
-    padding: 2rem 2.5rem .5rem;
+.menu > li > strong {
+    padding: 2rem 2.5rem 0.5rem;
 }
 .menu ul {
     list-style: none;
@@ -63,44 +45,43 @@ body, html {
     padding: 0 1rem 1rem;
 }
 .menu ul li a:before {
-    content: '-';
+    content: "-";
     margin-right: 1rem;
 }
 .nav-tabs {
     display: flex;
     flex-direction: row;
-    border: 0!important;
+    border: 0 !important;
 }
 .nav-tabs li {
     float: none;
     flex: 1;
 }
-.nav-tabs li>a {
+.nav-tabs li > a {
     background-color: #5a6068;
     color: #fff;
     font-weight: 700;
     border: 0;
-    border-radius: 0!important;
+    border-radius: 0 !important;
     margin: 0;
     padding: 1rem 1.5rem;
     text-align: center;
-    border-right: 1px solid rgba(0, 0, 0, .5);
+    border-right: 1px solid rgba(0, 0, 0, 0.5);
 }
-.nav-tabs li:last-child>a {
+.nav-tabs li:last-child > a {
     border-right: none;
 }
-.nav-tabs li>a:focus, .nav-tabs li>a:hover {
+.nav-tabs li > a:focus,
+.nav-tabs li > a:hover {
     background-color: #363a3f;
-    border: 0!important;
+    border: 0 !important;
 }
-.nav-tabs li.active>a {
+.nav-tabs li.active > a {
     border-radius: 0;
-    background-color: #183762!important;
-    color: #183762!important;
+    background-color: #183762 !important;
+    color: #183762 !important;
     border: 0;
 }
-
-/* sidebar classes/IDs to close sidebar and rotate arrow TJ 5-26-21*/
 #hamburger-wrapper {
     position: absolute;
     width: 50px;
@@ -131,7 +112,7 @@ body, html {
     text-shadow: -2px 0 #000, 0 2px #000, 2px 0 #000, 0 -2px #000;
 }
 .closed .burger:after {
-    transition: margin .2s, transform .1s .1s;
+    transition: margin 0.2s, transform 0.1s 0.1s;
 }
 .closed #hamburger-wrapper {
     margin-left: 0;
@@ -139,7 +120,6 @@ body, html {
 .closed #sidebar {
     display: none;
 }
-/* Toolbar classes/IDs to close toolbar and rotate arrow TJ 5-26-21*/
 #arrow-wrapper {
     float: right;
     position: absolute;
@@ -153,11 +133,10 @@ body, html {
     width: 100%;
     z-index: 2;
     background: #040707;
-    background: linear-gradient(0deg,rgba(4,7,7,0) 0,#040707 100%);
+    background: linear-gradient(0deg, rgba(4, 7, 7, 0) 0, #040707 100%);
     padding: 2rem 2rem 4rem 6rem;
     margin: 0 auto;
 }
-
 .arrow {
     color: #fff;
     font-size: 2em;
@@ -177,7 +156,7 @@ body, html {
     text-shadow: -2px 0 #000, 0 2px #000, 2px 0 #000, 0 -2px #000;
 }
 .closed .arrow:after {
-    transition: margin .2s, transform .1s .1s;
+    transition: margin 0.2s, transform 0.1s 0.1s;
 }
 .closed #arrow-wrapper {
     margin-right: 17px;
@@ -185,43 +164,27 @@ body, html {
 .closed .toolbar {
     display: none;
 }
-
 .box {
-   border: 1px black;
+    height: 100vh;
+    grid-column: 4/5;
+    grid-row: 1/2; /* visibility: hidden; */
 }
-
 #skymap {
-  position: relative;
-  flex-basis: 0;
-  flex-grow: 4;
-  height: 50vh;
-  width: 100vw;
-  animation-delay: 2000ms;
-  z-index: 1;
+    flex-basis: 0;
+    flex-grow: 4;
+    height: 50vh;
+    width: vw;
 }
-
-#skymapinfo {
-	position: relative;
-	
-	height: 50vh;
-	width: 50vw;
-	z-index: 2;
-
 #map {
-  flex-basis: 0;
-  flex-grow: 4;
-  height: 50vh;
-  width: 100vw;
+    flex-basis: 0;
+    flex-grow: 4;
+    height: 50vh;
+    width: vw;
 }
-
-
-
 #container {
-  height: 100vh;
-  display: flex;
+    height: 100vh;
+    display: flex;
 }
-
-/*Content--------------------------------------------------------------------------------------------------------------*/
 .content {
     font-size: 1.5rem;
     flex: 1;
@@ -249,18 +212,21 @@ body, html {
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 1px;
-    color: #183762;
+    color: #fff;
     z-index: 5;
 }
 .content-section {
     padding: 2rem;
 }
-.content-section .canvas, .content-section .data-table {
+.content-section .canvas,
+.content-section .data-table {
     max-width: 1200px;
     margin: 2rem 0;
-    width: 100%}
-.content-section .data-table td, .content-section .data-table th {
-    padding: .7rem;
+    width: 100%;
+}
+.content-section .data-table td,
+.content-section .data-table th {
+    padding: 0.7rem;
 }
 .content-section .canvas {
     border: 2px solid #ccc;
@@ -274,25 +240,24 @@ body, html {
 #sidebar {
     position: relative;
     z-index: 3;
-    box-shadow: 1rem 1rem 1rem rgba(0, 0, 0, .1);
+    box-shadow: 1rem 1rem 1rem rgba(0, 0, 0, 0.1);
     max-width: 300px;
     width: 100vw;
     color: #fff;
-    height: 100%}
-    
- .row {
+    height: 100%;
+}
+.row {
     display: flex;
     flex-direction: row;
     height: 100vh;
     width: 100vw;
     margin: 0;
 }
-
 .filters {
     background-color: #fff;
-    border: 1px solid rgba(0,0,0,.25);
+    border: 1px solid rgba(0, 0, 0, 0.25);
     display: inline-block;
     padding: 1rem;
-    border-left: 5px solid rgba(0,0,0,.7);
+    border-left: 5px solid rgba(0, 0, 0, 0.7);
     margin: 0.2rem;
 }
