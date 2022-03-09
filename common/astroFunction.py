@@ -147,7 +147,7 @@ def GeoToCelestial(lat,long):
     print(LST)
     # convert deg to hr-min-sec
     ra = ToHrMinSec(LST)
-    print("Right Acension = {}hr {}min {}s, Declination = {}° {}' {}\"".format(ra[0],ra[1],ra[2], dec[0],dec[1],dec[2]))
+    #print("Right Acension = {}hr {}min {}s, Declination = {}° {}' {}\"".format(ra[0],ra[1],ra[2], dec[0],dec[1],dec[2]))
     return ra, dec
     
 ra, dec = GeoToCelestial(120, 120)

@@ -219,15 +219,15 @@ function play(){
 			//var skyMapCall = "http://www.sky-map.org/?ra=" + result.ra + "&de=" + result.dec + "&zoom=3&show_grid=0&show_constellation_boundaries=1";
 			var skyMapCall = "http://server1.sky-map.org/skywindow?ra=" + result.ra + "&de=" + result.dec + "&img_source=DSS2&zoom=5";
 			document.getElementById("skymap").src = skyMapCall;
-			console.log(skyMapCall);
-			console.log("i = "+i+":"+result);
+			//console.log(skyMapCall);
+			//console.log("i = "+i+":"+result);
 			ra = result.ra;
 			dec = result.dec;
 						//aladin.gotoRaDec(result.ra_deg,result.dec_deg);
 						aladin.setFov(0.4);			
 		});
 		
-		console.log("i, ra, dec: "+ i+ra+dec);
+		//console.log("i, ra, dec: "+ i+ra+dec);
 		$.getJSON("/getIDNames/" + ra + "/" + dec , function (data) {
 				var star_result = JSON.parse(data);
 				//console.log(star_result);
@@ -235,12 +235,15 @@ function play(){
 				// reset infomap every 5 points
 				if ((k < 0) || ((i-k)>5)) {
 					k = i; // current index
-				console.log(star_result);
+				console.log("OBJECT CURRENTLY DISPLAYED: " + star_result.IDs[0]);
+				console.log("OBJECT RA: " + star_result.Ra[0]);
+				console.log("OBJECT DEC: "+ star_result.Dec[0]);
 				 	// go to first star in list
 				 	aladin.gotoObject(star_result.IDs[0]);
 				}
 			});	
-		setTimeout(function() {moveGoogleMap(point[0], point[1]); console.log("i = "+i+":"+point);},400);
+		setTimeout(function() {moveGoogleMap(point[0], point[1]);},400);
+		//console.log("i = "+i+":"+point);
 		//moveGoogleMap(point[0], point[1]);
 		i++;
 	}
