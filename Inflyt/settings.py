@@ -63,7 +63,7 @@ ROOT_URLCONF = 'Inflyt.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR + "/Inflyt-Projection/Templates"],
+        'DIRS': [BASE_DIR + "/projection/Templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
