@@ -1,0 +1,258 @@
+{% extends "home.html" %}
+{% block content %}
+<div id="arrowNav-wrapper" class="">
+	<div id="arrow-wrapper" class="">
+		<p class="glyphicon glyphicon-chevron-up arrow"></p>
+	</div>
+	<div class="toolbar">
+		<h1>Astronomy Projection Page</h1>
+		<div class="filters">
+				<span style="margin-right:10px;margin-top:10px;text-align:left;display:inline">Start</span>
+				<select id="startCity" name="startCity" onchange = "">
+						<option value="34.086610790779815,-118.2698917652363">Los Angeles</option>
+						<option value="45.55098947193025,-122.66115297824227">Portland</option>
+						<option value="40.76455896916648, -73.97823379174758">New York</option>
+						<option value="41.88179223353532, -87.63049326847904">Chicago</option>
+				</select>
+				<span style="margin-right:10px;margin-top:10px;text-align:left;display:inline">End</span>
+				<select id="endCity" name="endCity" onchange = "">
+						<option value="34.086610790779815,-118.2698917652363">Los Angeles</option>
+						<option value="45.55098947193025,-122.66115297824227">Portland</option>
+						<option value="40.76455896916648, -73.97823379174758">New York</option>
+						<option value="41.88179223353532, -87.63049326847904">Chicago</option>
+											
+				</select>
+				<span style="margin-right:10px;margin-top:10px;text-align:left;display:inline">Distance Apart</span>
+				<select style="margin-right:10px;" id="dist" name="dist" onchange = "">
+						<option value="5">5</option>
+						<option value="10">10</option>
+						<option value="25">25</option>
+						<option value="50">50</option>
+						<option value="100">100</option>		
+						<option value="150">150</option>
+						<option value="200">200</option>	
+						<option value="250">250</option>
+						<option value="300">300</option>					
+				</select>
+				<input type="button" id="simStart" name="simStart" value = "Start Simulation" style=" margin : 0.5em auto;" onclick = "startSim();"/>
+		</div>
+	</div>
+</div>		
+
+
+<div id="skymapcontainer" style= "display: inline-grid;">
+	<textarea readonly id="starinfo" rows="2" cols="60" style="position: relative; width:25vw; height:6vh;grid-column: 3/5;grid-row: 2/3;">Object information will be displayed here</textarea>
+
+	<div id="aladin-lite-div" style="width: 35vw; height:25vh; grid-column: 3 / 5; grid-row: 1 / 2;"></div>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.1.min.js" charset="utf-8"></script>
+	 
+	<!-- insert this snippet where you want Aladin Lite viewer to appear and after the loading of jQuery -->
+	<script type="text/javascript" src="https://aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.js" charset="utf-8"></script>
+	<script type="text/javascript">
+	    var aladin = A.aladin('#aladin-lite-div', {survey: "P/DSS2/color", fov:0.1, target: "M100", showReticle: false, showLayersControl: false, showZoomControl: false});
+	    aladin.setFovRange(0.01,0.1);
+	    //var init_fov = aladin.getFov();
+	
+	</script>
+	<IFRAME id = "skymap" SRC="http://server1.sky-map.org/skywindow?object=M100&img_source=DSS2&zoom=8" style= "height: 50vh; width: 100vw; grid-column: 1 / 5; grid-row: 1 / 4;"></IFRAME>
+	</div>
+
+</div>
+<div id="map" style: "height: 50vh; position: absolute; ></div>
+
+ 
+<script>
+var iframe = null;
+
+$(document).ready(function(){
+	$(window).on('mousemove', function (event) {
+	  
+	    var elmnt = iframe.contentWindow.document.getElementById("dhtmltooltip");
+	    console.log(elmnt);
+	});
+});
+
+function getStuff() {
+	iframe = document.getElementById("skymap");
+}
+
+
+const arrowNavWrapper = document.getElementById('arrowNav-wrapper')
+const arrowWrap = document.getElementById('arrow-wrapper')
+const wrapper = document.getElementById('hamburger-wrapper');
+const navWrap = document.getElementById('nav-wrapper');
+arrowWrap.addEventListener("click", () => {
+	arrowNavWrapper.classList.toggle("closed");
+	arrowWrap.classList.toggle("closed");
+	navWrap.classList.toggle("closed");
+})
+wrapper.addEventListener("click", () => {
+	navWrap.classList.toggle("closed");
+})
+
+
+
+const cameraOptions = {
+	tilt: 0,
+  	heading: 320,
+  	zoom: 14,
+  	center: { lat: 49.496675, lng: -102.65625 },
+};
+
+const mapOptions = {
+  ...cameraOptions,
+  mapId: "3569ac47fcd19a9d",
+  mapTypeId: 'satellite'
+};
+
+//<script type="text/javascript">
+function buttonControl( map ) {
+
+	const buttons = [
+    ["Rotate Left", "rotate", 10, google.maps.ControlPosition.LEFT_CENTER],
+    ["Rotate Right", "rotate", -10, google.maps.ControlPosition.RIGHT_CENTER],
+    ["Tilt Down", "tilt", 10, google.maps.ControlPosition.TOP_CENTER],
+    ["Tilt Up", "tilt", -10, google.maps.ControlPosition.BOTTOM_CENTER],
+  ];
+
+  buttons.forEach(([text, mode, amount, position]) => {
+    const controlDiv = document.createElement("div");
+    const controlUI = document.createElement("button");
+
+    controlUI.classList.add("ui-button");
+    controlUI.innerText = text;
+    controlUI.addEventListener("click", () => {
+      adjustMap(mode, amount);
+    });
+    controlDiv.appendChild(controlUI);
+    map.controls[position].push(controlDiv);
+  });
+
+  const adjustMap = function (mode, amount) {
+    switch (mode) {
+      case "tilt":
+        map.setTilt(map.getTilt() + amount);
+        break;
+      case "rotate":
+        map.setHeading(map.getHeading() + amount);
+        break;
+      default:
+        break;
+    }
+  };
+}
+
+function initMap() {
+	var mapLat; var mapLon; var mapZoom;
+	mapLat = 34.217643; mapLon = -118.488386; mapZoom = 13;
+	
+	theMap = new google.maps.Map(document.getElementById('map'), mapOptions);
+	
+/*	var ctaLayer = new google.maps.KmlLayer({
+		url: 'https://googlearchive.github.io/js-v2-samples/ggeoxml/cta.kml',
+		map: theMap
+		
+
+	}); */
+	
+	buttonControl(theMap);
+}
+</script>
+
+<script>
+
+
+let theMap;
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSBZ0W0eCGj5RpLi8t7rEXdmi6mHmhy8I&callback=initMap&v=beta"
+		      async 
+></script>
+
+<script>
+var points = [];
+var i;
+var simInterval;
+var k = -1;
+
+
+
+function moveGoogleMap(lat1, lon1) {
+	theMap.setCenter(new google.maps.LatLng(lat1, lon1));
+}
+function startSim() {
+	var startPoint = document.getElementById("startCity").value;
+	var endPoint = document.getElementById("endCity").value;
+	var distApart = document.getElementById("dist").value;
+	$.getJSON( "/getTripPoints/" + startPoint + "/" + endPoint + "/" + distApart , function( data ) {
+		points = JSON.parse(data);
+		i = 0;
+		k = -1;
+		//for (var i = 0; i < points.length; i++ ){
+			//point = points[i]
+			//moveGoogleMap(point[0], point[1]);
+		//}
+	});
+	clearInterval(simInterval);
+	arrowNavWrapper.classList.toggle("closed");
+	arrowWrap.classList.toggle("closed");
+	wrapper.classList.toggle("closed");
+	navWrap.classList.toggle("closed");
+	sim();	
+	
+}
+function sim(){
+	simInterval = setInterval(play, 3000);
+}
+
+var ra;
+var dec;
+var result;
+var star_result;	
+
+function play(){
+    var element = document.getElementById("aladin-lite-div");
+    
+	if(i <= points.length){
+		point = points[i];
+		$.getJSON( "/getCelestial/" + point[0] + "/" + point[1] , function (data) {
+			result = JSON.parse(data);
+			//var skyMapCall = "http://www.sky-map.org/?ra=" + result.ra + "&de=" + result.dec + "&zoom=3&show_grid=0&show_constellation_boundaries=1";
+			var skyMapCall = "http://server1.sky-map.org/skywindow?ra=" + result.ra + "&de=" + result.dec + "&img_source=DSS2&zoom=5";
+			document.getElementById("skymap").src = skyMapCall;
+			//console.log(skyMapCall);
+			//console.log("i = "+i+":"+result);
+			ra = result.ra;
+			dec = result.dec;
+						//aladin.gotoRaDec(result.ra_deg,result.dec_deg);
+						aladin.setFov(0.4);			
+		});
+		
+		//console.log("i, ra, dec: "+ i+ra+dec);
+		// check if this is the start of simulation OR if map has moved 5 times
+		if ((k < 0) || ((i-k)>5)) {
+		$.getJSON("/getIDNames/" + ra + "/" + dec , function (data) {
+				var star_result = JSON.parse(data);
+				//console.log(star_result);
+				//console.log(i);
+				// reset infomap every 5 points
+					k = i; // current index
+				console.log("OBJECT CURRENTLY DISPLAYED: " + star_result.IDs[0]);
+				console.log("OBJECT RA: " + star_result.Ra[0]);
+				console.log("OBJECT DEC: "+ star_result.Dec[0]);
+				document.getElementById("starinfo").value="Object ID: "+star_result.IDs[0]+"\nObject RA: "+star_result.Ra[0]+" Object Dec: "+star_result.Dec[0];
+				
+				 	// go to first star in list
+				 	aladin.gotoObject(star_result.IDs[0]);
+			});	
+		}
+		setTimeout(function() {moveGoogleMap(point[0], point[1]);},400);
+		//console.log("i = "+i+":"+point);
+		//moveGoogleMap(point[0], point[1]);
+		i++;
+	}
+}
+
+
+</script>
+{% endblock content %}
